@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SiPADI — Sistem Prediksi Anomali & Deteksi Risiko Pangan Indonesia</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #0a1628;
+            color: #ffffff;
+            min-height: 100vh;
+        }
+
+        /* NAV */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.2rem 4rem;
+            background: rgba(255,255,255,0.03);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+        .nav-logo {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #52b788;
+        }
+        .nav-links { display: flex; gap: 2rem; }
+        .nav-links a {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+        .nav-links a:hover { color: #52b788; }
+        .nav-cta {
+            background: #52b788;
+            color: #0a1628 !important;
+            padding: 0.5rem 1.2rem;
+            border-radius: 6px;
+            font-weight: 600 !important;
+        }
+
+        /* HERO */
+        .hero {
+            padding: 6rem 4rem 4rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(82,183,136,0.15);
+            border: 1px solid rgba(82,183,136,0.3);
+            color: #52b788;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1rem;
+            letter-spacing: -1px;
+        }
+        .hero h1 span { color: #52b788; }
+        .hero p {
+            font-size: 1.1rem;
+            color: rgba(255,255,255,0.65);
+            line-height: 1.7;
+            margin-bottom: 2rem;
+        }
+        .hero-buttons { display: flex; gap: 1rem; flex-wrap: wrap; }
+        .btn-primary {
+            background: #52b788;
+            color: #0a1628;
+            padding: 0.8rem 2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .btn-primary:hover {
+            background: #40a070;
+            transform: translateY(-1px);
+        }
+        .btn-secondary {
+            background: rgba(255,255,255,0.08);
+            color: white;
+            padding: 0.8rem 2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            border: 1px solid rgba(255,255,255,0.15);
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.12);
+            transform: translateY(-1px);
+        }
+
+        /* HERO VISUAL */
+        .hero-visual {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 16px;
+            padding: 2rem;
+        }
+        .hero-visual h3 {
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.5);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1.5rem;
+        }
+        .model-cards { display: flex; flex-direction: column; gap: 1rem; }
+        .model-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 10px;
+            padding: 1rem 1.2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .model-card-left { display: flex; align-items: center; gap: 0.8rem; }
+        .model-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+        }
+        .icon-green { background: rgba(82,183,136,0.2); }
+        .icon-red { background: rgba(239,68,68,0.2); }
+        .icon-yellow { background: rgba(245,158,11,0.2); }
+        .model-name { font-size: 0.85rem; font-weight: 600; }
+        .model-algo { font-size: 0.75rem; color: rgba(255,255,255,0.5); }
+        .model-metrics { text-align: right; }
+        .model-score {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #52b788;
+        }
+        .model-metric-name {
+            font-size: 0.7rem;
+            color: rgba(255,255,255,0.4);
+        }
+
+        /* STATS */
+        .stats {
+            background: rgba(82,183,136,0.05);
+            border-top: 1px solid rgba(82,183,136,0.15);
+            border-bottom: 1px solid rgba(82,183,136,0.15);
+            padding: 3rem 4rem;
+        }
+        .stats-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 2rem;
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #52b788;
+            line-height: 1;
+            margin-bottom: 0.4rem;
+        }
+        .stat-label {
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.55);
+            line-height: 1.4;
+        }
+
+        /* AZURE SECTION */
+        .azure-section {
+            padding: 5rem 4rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .section-header { text-align: center; margin-bottom: 3rem; }
+        .section-tag {
+            display: inline-block;
+            background: rgba(0,120,212,0.15);
+            border: 1px solid rgba(0,120,212,0.3);
+            color: #4da6ff;
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        .section-header h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+        }
+        .section-header p {
+            color: rgba(255,255,255,0.55);
+            font-size: 0.95rem;
+        }
+        .azure-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 1rem;
+        }
+        .azure-card {
+            background: rgba(0,120,212,0.08);
+            border: 1px solid rgba(0,120,212,0.2);
+            border-radius: 12px;
+            padding: 1.5rem 1rem;
+            text-align: center;
+            transition: all 0.2s;
+        }
+        .azure-card:hover {
+            background: rgba(0,120,212,0.15);
+            transform: translateY(-3px);
+        }
+        .azure-card .icon { font-size: 2rem; margin-bottom: 0.8rem; }
+        .azure-card h4 { font-size: 0.85rem; font-weight: 600; margin-bottom: 0.4rem; }
+        .azure-card p { font-size: 0.75rem; color: rgba(255,255,255,0.5); line-height: 1.4; }
+        .azure-free {
+            display: inline-block;
+            background: rgba(82,183,136,0.2);
+            color: #52b788;
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 0.1rem 0.5rem;
+            border-radius: 4px;
+            margin-top: 0.5rem;
+        }
+
+        /* FEATURES */
+        .features {
+            padding: 5rem 4rem;
+            background: rgba(255,255,255,0.02);
+        }
+        .features-inner { max-width: 1200px; margin: 0 auto; }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+        .feature-card {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            padding: 1.8rem;
+            transition: all 0.2s;
+        }
+        .feature-card:hover {
+            border-color: rgba(82,183,136,0.3);
+            transform: translateY(-3px);
+        }
+        .feature-icon { font-size: 2rem; margin-bottom: 1rem; }
+        .feature-card h3 { font-size: 1rem; font-weight: 600; margin-bottom: 0.6rem; }
+        .feature-card p { font-size: 0.85rem; color: rgba(255,255,255,0.55); line-height: 1.6; }
+
+        /* POLICY */
+        .policy {
+            padding: 5rem 4rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .policy-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+        .policy-card {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            padding: 1.8rem;
+            display: flex;
+            gap: 1.2rem;
+            align-items: flex-start;
+        }
+        .policy-num {
+            background: rgba(82,183,136,0.2);
+            color: #52b788;
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+        .policy-card h4 { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.4rem; }
+        .policy-card p { font-size: 0.82rem; color: rgba(255,255,255,0.55); line-height: 1.5; }
+
+        /* CTA */
+        .cta {
+            padding: 5rem 4rem;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(82,183,136,0.1) 0%, rgba(0,120,212,0.1) 100%);
+            border-top: 1px solid rgba(82,183,136,0.15);
+        }
+        .cta h2 { font-size: 2.2rem; font-weight: 700; margin-bottom: 1rem; }
+        .cta p { color: rgba(255,255,255,0.6); margin-bottom: 2rem; font-size: 1rem; }
+        .cta-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+        /* FOOTER */
+        footer {
+            padding: 2rem 4rem;
+            border-top: 1px solid rgba(255,255,255,0.08);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        footer p { font-size: 0.82rem; color: rgba(255,255,255,0.4); }
+        .footer-links { display: flex; gap: 1.5rem; }
+        .footer-links a {
+            font-size: 0.82rem;
+            color: rgba(255,255,255,0.4);
+            text-decoration: none;
+        }
+        .footer-links a:hover { color: #52b788; }
+
+        @media (max-width: 768px) {
+            nav { padding: 1rem 1.5rem; }
+            .nav-links { display: none; }
+            .hero { grid-template-columns: 1fr; padding: 3rem 1.5rem; gap: 2rem; }
+            .hero h1 { font-size: 2.2rem; }
+            .stats { padding: 2rem 1.5rem; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+            .azure-section, .features-inner, .policy, .cta { padding: 3rem 1.5rem; }
+            .azure-grid { grid-template-columns: repeat(2, 1fr); }
+            .features-grid { grid-template-columns: 1fr; }
+            .policy-grid { grid-template-columns: 1fr; }
+            footer { flex-direction: column; gap: 1rem; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAV -->
+    <nav>
+        <div class="nav-logo">🌾 SiPADI</div>
+        <div class="nav-links">
+            <a href="#fitur">Fitur</a>
+            <a href="#azure">Azure</a>
+            <a href="#kebijakan">Kebijakan</a>
+            <a href="https://github.com/loma09/sipadi">GitHub</a>
+            <a href="https://sipadii.streamlit.app/" class="nav-cta">Buka Dashboard →</a>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-badge">
+                🏆 Microsoft Elevate · AI Impact Challenge 2026
+            </div>
+            <h1>Deteksi Dini<br>Risiko <span>Pangan</span><br>Indonesia</h1>
+            <p>
+                SiPADI adalah sistem AI berbasis Microsoft Azure yang memprediksi 
+                produktivitas padi, mendeteksi risiko gagal panen, dan memforecast 
+                harga beras untuk 58 kabupaten di Jawa Tengah & Jawa Timur.
+            </p>
+            <div class="hero-buttons">
+                <a href="https://sipadii.streamlit.app/" class="btn-primary">
+                    🚀 Buka Dashboard
+                </a>
+                <a href="https://github.com/loma09/sipadi" class="btn-secondary">
+                    📂 Lihat Kode
+                </a>
+            </div>
+        </div>
+
+        <div class="hero-visual">
+            <h3>⚡ Model AI Performance</h3>
+            <div class="model-cards">
+                <div class="model-card">
+                    <div class="model-card-left">
+                        <div class="model-icon icon-green">🌾</div>
+                        <div>
+                            <div class="model-name">Prediksi Produktivitas</div>
+                            <div class="model-algo">XGBoost Regressor</div>
+                        </div>
+                    </div>
+                    <div class="model-metrics">
+                        <div class="model-score">R² 0.886</div>
+                        <div class="model-metric-name">MAPE 2.25%</div>
+                    </div>
+                </div>
+                <div class="model-card">
+                    <div class="model-card-left">
+                        <div class="model-icon icon-red">⚠️</div>
+                        <div>
+                            <div class="model-name">Deteksi Risiko Gagal Panen</div>
+                            <div class="model-algo">XGBoost Classifier</div>
+                        </div>
+                    </div>
+                    <div class="model-metrics">
+                        <div class="model-score">F1 0.833</div>
+                        <div class="model-metric-name">AUC 0.967</div>
+                    </div>
+                </div>
+                <div class="model-card">
+                    <div class="model-card-left">
+                        <div class="model-icon icon-yellow">💰</div>
+                        <div>
+                            <div class="model-name">Forecast Harga Beras</div>
+                            <div class="model-algo">SARIMA(1,1,1)(1,1,1,12)</div>
+                        </div>
+                    </div>
+                    <div class="model-metrics">
+                        <div class="model-score">MAPE 1.16%</div>
+                        <div class="model-metric-name">12 bulan horizon</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- STATS -->
+    <section class="stats">
+        <div class="stats-grid">
+            <div>
+                <div class="stat-value">58</div>
+                <div class="stat-label">Kabupaten Dipantau<br>Jateng & Jatim</div>
+            </div>
+            <div>
+                <div class="stat-value">11.6K</div>
+                <div class="stat-label">Total Records<br>7 Sumber Data</div>
+            </div>
+            <div>
+                <div class="stat-value">51</div>
+                <div class="stat-label">Fitur Engineered<br>Multi-sumber</div>
+            </div>
+            <div>
+                <div class="stat-value">5</div>
+                <div class="stat-label">Azure Services<br>Terintegrasi</div>
+            </div>
+            <div>
+                <div class="stat-value">92.6%</div>
+                <div class="stat-label">Recall Deteksi<br>Risiko Gagal Panen</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AZURE -->
+    <section class="azure-section" id="azure">
+        <div class="section-header">
+            <div class="section-tag">⚡ Powered by Microsoft Azure</div>
+            <h2>5 Azure Services Terintegrasi</h2>
+            <p>Arsitektur cloud-native yang scalable dan production-ready</p>
+        </div>
+        <div class="azure-grid">
+            <div class="azure-card">
+                <div class="icon">🗄️</div>
+                <h4>Azure Blob Storage</h4>
+                <p>Data lake untuk 7 dataset & model artifacts</p>
+                <span class="azure-free">FREE 5GB</span>
+            </div>
+            <div class="azure-card">
+                <div class="icon">🤖</div>
+                <h4>Azure Machine Learning</h4>
+                <p>Experiment tracking & model registry</p>
+                <span class="azure-free">FREE QUOTA</span>
+            </div>
+            <div class="azure-card">
+                <div class="icon">💬</div>
+                <h4>Azure AI Language</h4>
+                <p>Sentiment analysis berita pangan</p>
+                <span class="azure-free">FREE F0</span>
+            </div>
+            <div class="azure-card">
+                <div class="icon">🗺️</div>
+                <h4>Azure Maps</h4>
+                <p>Visualisasi peta risiko kabupaten</p>
+                <span class="azure-free">FREE 1K/hari</span>
+            </div>
+            <div class="azure-card">
+                <div class="icon">🌐</div>
+                <h4>Azure Static Web Apps</h4>
+                <p>Hosting landing page publik ini</p>
+                <span class="azure-free">FREE</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section class="features" id="fitur">
+        <div class="features-inner">
+            <div class="section-header">
+                <div class="section-tag">🌾 Fitur Utama</div>
+                <h2>Solusi End-to-End Ketahanan Pangan</h2>
+                <p>Dari data mentah hingga rekomendasi kebijakan yang actionable</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">📈</div>
+                    <h3>Prediksi Produktivitas Real-time</h3>
+                    <p>Input parameter iklim, lahan, dan infrastruktur untuk mendapatkan prediksi produktivitas padi per kabupaten dengan akurasi R²=0.886.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚠️</div>
+                    <h3>Deteksi Dini Risiko Gagal Panen</h3>
+                    <p>Sistem klasifikasi berbasis AI yang mendeteksi 92.6% kasus risiko gagal panen sebelum terjadi, memberikan waktu intervensi yang cukup.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💰</div>
+                    <h3>Forecast Harga Beras 12 Bulan</h3>
+                    <p>Model SARIMA dengan MAPE 1.16% memforecast harga beras hingga 12 bulan ke depan untuk mendukung keputusan pembelian Bulog.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🗺️</div>
+                    <h3>Peta Risiko Interaktif</h3>
+                    <p>Visualisasi spasial risiko gagal panen per kabupaten menggunakan Azure Maps untuk identifikasi wilayah prioritas intervensi.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📰</div>
+                    <h3>Analisis Sentimen Berita Pangan</h3>
+                    <p>Azure AI Language menganalisis sentimen berita pertanian secara real-time sebagai indikator tambahan kondisi ketahanan pangan.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💡</div>
+                    <h3>Rekomendasi Strategis</h3>
+                    <p>Insight actionable untuk Bulog dan Kementan: kapan beli gabah, mana prioritas pompanisasi, dan kabupaten mana yang butuh intervensi segera.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- POLICY -->
+    <section class="policy" id="kebijakan">
+        <div class="section-header">
+            <div class="section-tag">🏛️ Relevansi Kebijakan</div>
+            <h2>Mendukung Program Pemerintah</h2>
+            <p>SiPADI dirancang langsung untuk program prioritas Presiden Prabowo</p>
+        </div>
+        <div class="policy-grid">
+            <div class="policy-card">
+                <div class="policy-num">1</div>
+                <div>
+                    <h4>Swasembada Pangan 2025–2029</h4>
+                    <p>Prediksi produktivitas & deteksi risiko gagal panen untuk 58 kabupaten sentra padi Jawa Tengah & Jawa Timur.</p>
+                </div>
+            </div>
+            <div class="policy-card">
+                <div class="policy-num">2</div>
+                <div>
+                    <h4>Program Pompanisasi Kementan</h4>
+                    <p>Evaluasi dampak pompanisasi per kabupaten dan rekomendasi alokasi 500 unit pompa ke wilayah paling membutuhkan.</p>
+                </div>
+            </div>
+            <div class="policy-card">
+                <div class="policy-num">3</div>
+                <div>
+                    <h4>Stabilisasi Harga Bulog</h4>
+                    <p>Forecast harga beras 12 bulan ke depan untuk mendukung keputusan pembelian cadangan beras preventif oleh Bulog.</p>
+                </div>
+            </div>
+            <div class="policy-card">
+                <div class="policy-num">4</div>
+                <div>
+                    <h4>Lumbung Pangan Nasional</h4>
+                    <p>Identifikasi kabupaten surplus produksi untuk pengembangan sentra pangan dan optimasi distribusi antar wilayah.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta">
+        <h2>Coba SiPADI Sekarang</h2>
+        <p>Dashboard interaktif dengan data real — prediksi, deteksi, dan forecast dalam satu platform</p>
+        <div class="cta-buttons">
+            <a href="https://sipadii.streamlit.app/" class="btn-primary">
+                🚀 Buka Dashboard
+            </a>
+            <a href="https://github.com/loma09/sipadi" class="btn-secondary">
+                📂 Source Code
+            </a>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>© 2026 SiPADI · Microsoft Elevate Training Center · AI Impact Challenge 2026</p>
+        <div class="footer-links">
+            <a href="https://github.com/loma09/sipadi">GitHub</a>
+            <a href="https://sipadii.streamlit.app/">Dashboard</a>
+            <a href="https://azure.microsoft.com">Microsoft Azure</a>
+        </div>
+    </footer>
+
+</body>
+</html>

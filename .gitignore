@@ -1,0 +1,29 @@
+cat >> .gitignore << 'EOF'
+
+# Environment
+.env
+*.env
+.streamlit/
+# Data files (upload ke Azure Blob saja)
+data/raw/*
+data/processed/*
+data/external/*
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+!data/external/.gitkeep
+
+# Model artifacts (upload ke Azure ML saja)
+models/*
+!models/.gitkeep
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
+*/.ipynb_checkpoints/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+EOF
