@@ -20,9 +20,12 @@ from azure.core.credentials import AzureKeyCredential
 
 load_dotenv()
 
-if hasattr(st, 'secrets') and len(st.secrets) > 0:
-    for key, val in st.secrets.items():
-        os.environ[key] = str(val)
+try:
+    if hasattr(st, 'secrets') and len(st.secrets) > 0:
+        for key, val in st.secrets.items():
+            os.environ[key] = str(val)
+except Exception:
+    pass
 
 st.set_page_config(
     page_title="SiPADI — Sistem Prediksi Anomali & Deteksi Risiko Pangan",
@@ -37,593 +40,11 @@ PROCESSED_DIR = BASE_DIR / "data" / "processed"
 RAW_DIR       = BASE_DIR / "data" / "raw"
 
 # ═══════════════════════════════════════════════════════
-# REDESIGN CSS — FULL OVERHAUL
+# LOAD CSS FROM EXTERNAL FILE
 # ═══════════════════════════════════════════════════════
-st.markdown("""
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap');
-
-:root {
-    --g900: #021a0a;
-    --g800: #042f12;
-    --g700: #064a1c;
-    --g600: #0a6626;
-    --g500: #128233;
-    --g400: #1da84a;
-    --g300: #34d464;
-    --g200: #7de8a0;
-    --g100: #c3f5d4;
-    --g50:  #f0fdf5;
-
-    --ink: #080f09;
-    --ink2: #1e2b21;
-    --ink3: #3a4d3d;
-    --ink4: #6b7d6e;
-    --ink5: #9dada0;
-    --ink6: #cdd8d0;
-    --ink7: #e8efe9;
-    --ink8: #f5f9f6;
-
-    --red:   #d92b2b;
-    --red50: #fff0f0;
-    --amb:   #c97a00;
-    --amb50: #fff8ec;
-    --blu:   #1a5fd4;
-    --blu50: #eef4ff;
-
-    --r4: 4px;
-    --r8: 8px;
-    --r12: 12px;
-    --r16: 16px;
-    --r24: 24px;
-}
-
-*, *::before, *::after { box-sizing: border-box; }
-
-html, body, [class*="css"] {
-    font-family: 'Outfit', sans-serif !important;
-    background: #f7fbf8 !important;
-}
-
-.block-container {
-    padding: 1.5rem 2rem 4rem !important;
-    max-width: 1500px !important;
-}
-
-/* ── SIDEBAR ── */
-[data-testid="stSidebar"] {
-    background: var(--g900) !important;
-    border-right: 1px solid var(--g800) !important;
-}
-[data-testid="stSidebar"] > div:first-child {
-    padding: 1.5rem 1rem 2rem;
-}
-[data-testid="stSidebar"] * {
-    font-family: 'Outfit', sans-serif !important;
-}
-[data-testid="stSidebar"] .stRadio > label { display: none !important; }
-[data-testid="stSidebar"] .stRadio div[role="radiogroup"] {
-    display: flex;
-    flex-direction: column;
-    gap: 1px;
-}
-[data-testid="stSidebar"] .stRadio div[role="radiogroup"] label {
-    background: transparent !important;
-    border: none !important;
-    border-radius: var(--r8) !important;
-    padding: 0.55rem 0.9rem !important;
-    font-size: 0.79rem !important;
-    font-weight: 500 !important;
-    color: #4d7a5a !important;
-    transition: all 0.15s !important;
-    cursor: pointer !important;
-}
-[data-testid="stSidebar"] .stRadio div[role="radiogroup"] label:hover {
-    background: rgba(255,255,255,0.05) !important;
-    color: var(--g200) !important;
-    padding-left: 1.1rem !important;
-}
-[data-testid="stSidebar"] .stRadio div[role="radiogroup"] label[data-checked="true"] {
-    background: rgba(52,212,100,0.1) !important;
-    color: var(--g200) !important;
-    font-weight: 700 !important;
-    border-left: 2px solid var(--g300) !important;
-    padding-left: calc(0.9rem - 2px) !important;
-}
-[data-testid="stSidebar"] .stRadio div[role="radiogroup"] label > div:first-child {
-    display: none !important;
-}
-[data-testid="stSidebarNav"] { display: none; }
-
-[data-testid="stSidebarCollapseButton"] button,
-[data-testid="collapsedControl"] button {
-    background: var(--g800) !important;
-    border: 1px solid var(--g700) !important;
-    border-radius: 10px !important;
-    color: var(--g300) !important;
-}
-[data-testid="stSidebarCollapseButton"] button svg,
-[data-testid="collapsedControl"] button svg {
-    stroke: var(--g300) !important;
-}
-
-/* ── SIDEBAR COMPONENTS ── */
-.sb-head {
-    padding-bottom: 1.25rem;
-    margin-bottom: 1.5rem;
-    border-bottom: 1px solid rgba(255,255,255,0.06);
-}
-.sb-logorow {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 0.6rem;
-}
-.sb-icon {
-    width: 36px; height: 36px;
-    background: var(--g500);
-    border-radius: var(--r8);
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-}
-.sb-icon svg {
-    width: 18px; height: 18px;
-    fill: none; stroke: #fff;
-    stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
-}
-.sb-title {
-    font-size: 1rem; font-weight: 800;
-    color: #e8f5ec !important; margin: 0;
-    letter-spacing: -0.3px;
-}
-.sb-sub {
-    font-size: 0.62rem; color: #2d5e3a !important;
-    margin: 0; line-height: 1.5;
-}
-.sb-nav-label {
-    font-size: 0.58rem; font-weight: 700;
-    text-transform: uppercase; letter-spacing: 1.5px;
-    color: #1d4427 !important; margin: 0 0 0.5rem 0.9rem;
-}
-.sb-divider {
-    border: none;
-    border-top: 1px solid rgba(255,255,255,0.05);
-    margin: 1.25rem 0;
-}
-.sb-foot-label {
-    font-size: 0.58rem; font-weight: 700;
-    text-transform: uppercase; letter-spacing: 1px;
-    color: #1d4427 !important; margin-bottom: 3px;
-}
-.sb-foot-val {
-    font-size: 0.72rem; color: #2d5e3a !important;
-}
-.sb-svc-item {
-    display: flex; align-items: center; gap: 7px;
-    font-size: 0.71rem; color: #2d5e3a !important;
-    padding: 0.2rem 0;
-}
-.sb-svc-dot {
-    width: 4px; height: 4px;
-    background: var(--g600); border-radius: 50%;
-}
-
-/* ── HERO ── */
-.hero {
-    background: var(--g900);
-    border-radius: var(--r24);
-    padding: 2rem 2.5rem;
-    margin-bottom: 1.75rem;
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 2rem;
-    align-items: center;
-    border: 1px solid var(--g800);
-    position: relative;
-    overflow: hidden;
-}
-.hero::before {
-    content: '';
-    position: absolute;
-    width: 350px; height: 350px;
-    top: -100px; right: -80px;
-    background: radial-gradient(circle, rgba(18,130,51,0.2) 0%, transparent 70%);
-    pointer-events: none;
-}
-.hero::after {
-    content: '';
-    position: absolute;
-    width: 180px; height: 180px;
-    bottom: -60px; left: 30%;
-    background: radial-gradient(circle, rgba(52,212,100,0.06) 0%, transparent 70%);
-    pointer-events: none;
-}
-.hero-live {
-    display: inline-flex; align-items: center; gap: 6px;
-    background: rgba(52,212,100,0.08);
-    border: 1px solid rgba(52,212,100,0.18);
-    color: var(--g300);
-    padding: 3px 10px; border-radius: 100px;
-    font-size: 0.62rem; font-weight: 700;
-    text-transform: uppercase; letter-spacing: 1px;
-    margin-bottom: 0.85rem;
-}
-.hero-live-dot {
-    width: 5px; height: 5px;
-    background: var(--g300); border-radius: 50%;
-    animation: pulse 2s infinite;
-}
-@keyframes pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.3; transform: scale(0.8); }
-}
-.hero h1 {
-    font-size: 2.1rem; font-weight: 900;
-    color: #fff; margin: 0 0 0.5rem;
-    letter-spacing: -1.2px; line-height: 1.1;
-}
-.hero h1 span { color: var(--g300); }
-.hero-desc {
-    font-size: 0.8rem; color: rgba(255,255,255,0.3);
-    margin: 0; line-height: 1.8; max-width: 480px;
-}
-.hero-stats-grid {
-    display: grid; grid-template-columns: 1fr 1fr;
-    gap: 1px;
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.06);
-    border-radius: var(--r12);
-    overflow: hidden;
-    min-width: 260px;
-}
-.hs {
-    background: rgba(255,255,255,0.03);
-    padding: 0.8rem 1rem;
-}
-.hs-label {
-    font-size: 0.56rem; font-weight: 700;
-    text-transform: uppercase; letter-spacing: 1px;
-    color: rgba(255,255,255,0.25); display: block; margin-bottom: 4px;
-}
-.hs-val {
-    font-size: 0.85rem; font-weight: 700;
-    color: rgba(255,255,255,0.65); display: block;
-}
-.hs-val.hi { color: var(--g200); }
-
-/* ── SECTION TITLE ── */
-.stitle {
-    font-size: 0.65rem; font-weight: 700;
-    text-transform: uppercase; letter-spacing: 1.5px;
-    color: var(--ink5); margin: 0 0 1rem;
-    display: flex; align-items: center; gap: 0.75rem;
-}
-.stitle::after {
-    content: ''; flex: 1; height: 1px;
-    background: var(--ink7);
-}
-
-/* ── PAGE HEADER ── */
-.phead {
-    display: flex; align-items: center; gap: 1rem;
-    margin-bottom: 2rem; padding-bottom: 1.5rem;
-    border-bottom: 1px solid var(--ink7);
-}
-.phead-icon {
-    width: 48px; height: 48px;
-    background: var(--g50);
-    border: 1px solid var(--g100);
-    border-radius: var(--r12);
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-}
-.phead-icon svg {
-    width: 22px; height: 22px;
-    fill: none; stroke: var(--g500);
-    stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
-}
-.phead-text h1 {
-    font-size: 1.5rem; font-weight: 800;
-    color: var(--ink); margin: 0 0 4px;
-    letter-spacing: -0.6px;
-}
-.phead-text p {
-    font-size: 0.78rem; color: var(--ink5); margin: 0;
-}
-
-/* ── KPI CARDS ── */
-.kpi {
-    background: #fff;
-    border: 1px solid var(--ink7);
-    border-radius: var(--r16);
-    padding: 1.35rem 1.25rem;
-    height: 100%;
-    position: relative;
-    overflow: hidden;
-    transition: transform 0.2s, box-shadow 0.2s;
-}
-.kpi::after {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 3px;
-    background: var(--kc, var(--g300));
-    border-radius: 3px 3px 0 0;
-}
-.kpi:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 32px rgba(0,0,0,0.07);
-}
-.kpi-label {
-    font-size: 0.63rem; font-weight: 700;
-    text-transform: uppercase; letter-spacing: 1px;
-    color: var(--ink5); margin-bottom: 0.8rem;
-}
-.kpi-num {
-    font-size: 2.2rem; font-weight: 900;
-    color: var(--ink); line-height: 1;
-    letter-spacing: -2px; margin-bottom: 4px;
-    font-variant-numeric: tabular-nums;
-}
-.kpi-num.mid { font-size: 1.55rem; letter-spacing: -0.5px; }
-.kpi-desc {
-    font-size: 0.69rem; color: var(--ink5);
-    margin-bottom: 0.8rem;
-}
-.badge {
-    display: inline-flex; align-items: center; gap: 4px;
-    font-size: 0.67rem; font-weight: 700;
-    padding: 3px 9px; border-radius: 100px;
-    font-family: 'Space Mono', monospace;
-}
-.b-up  { background: var(--g50);  color: var(--g600); }
-.b-dn  { background: var(--red50); color: var(--red); }
-.b-neu { background: var(--ink8); color: var(--ink4); }
-
-/* ── MODEL PERF CARDS ── */
-.mc {
-    background: #fff;
-    border: 1px solid var(--ink7);
-    border-radius: var(--r16);
-    padding: 1.35rem;
-    height: 100%;
-    transition: transform 0.2s, box-shadow 0.2s;
-}
-.mc:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 32px rgba(0,0,0,0.07);
-}
-.mc-tag {
-    display: inline-block;
-    font-size: 0.58rem; font-weight: 700;
-    letter-spacing: 0.5px; text-transform: uppercase;
-    padding: 3px 8px; border-radius: var(--r4);
-    margin-bottom: 0.9rem;
-    font-family: 'Space Mono', monospace;
-}
-.tg  { background: var(--g50);   color: var(--g600); }
-.tr  { background: var(--red50); color: var(--red); }
-.ta  { background: var(--amb50); color: var(--amb); }
-.mc h3 {
-    font-size: 0.95rem; font-weight: 700;
-    color: var(--ink); margin: 0 0 3px;
-}
-.mc-algo {
-    font-size: 0.68rem; color: var(--ink5);
-    margin-bottom: 1.1rem;
-    font-family: 'Space Mono', monospace;
-}
-.mrow {
-    display: flex; justify-content: space-between;
-    align-items: center;
-    padding: 0.45rem 0;
-    border-bottom: 1px solid var(--ink8);
-}
-.mrow:last-child { border-bottom: none; }
-.mk { font-size: 0.72rem; color: var(--ink5); font-weight: 500; }
-.mv {
-    font-size: 0.82rem; font-weight: 700;
-    color: var(--ink3);
-    font-family: 'Space Mono', monospace;
-}
-.ok   { color: var(--g500) !important; }
-.warn { color: var(--red) !important; }
-
-/* ── ALERTS ── */
-.al {
-    border-radius: var(--r12);
-    padding: 1rem 1.2rem;
-    margin: 0.75rem 0;
-    font-size: 0.81rem;
-    line-height: 1.7;
-    border-left: 3px solid;
-}
-.al strong {
-    display: block; font-weight: 700;
-    margin-bottom: 4px; font-size: 0.84rem;
-}
-.al-err  { background: var(--red50); border-color: var(--red);  color: #6b0f0f; }
-.al-ok   { background: var(--g50);   border-color: var(--g400); color: #064a1c; }
-.al-info { background: var(--blu50); border-color: var(--blu);  color: #0f3a8a; }
-.al-warn { background: var(--amb50); border-color: var(--amb);  color: #623e00; }
-
-/* ── INSIGHT CARDS ── */
-.ic {
-    background: var(--ink8);
-    border: 1px solid var(--ink7);
-    border-radius: var(--r12);
-    padding: 1rem 1.2rem;
-    margin: 0.5rem 0;
-    font-size: 0.81rem;
-    line-height: 1.7;
-    transition: box-shadow 0.15s, transform 0.15s;
-}
-.ic:hover {
-    box-shadow: 0 4px 14px rgba(0,0,0,0.05);
-    transform: translateY(-1px);
-}
-.ic-head {
-    display: flex; justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 0.45rem; gap: 0.75rem;
-}
-.ic-head strong {
-    font-size: 0.88rem; font-weight: 700; color: var(--ink);
-}
-.ic p { color: var(--ink4); margin: 0; }
-.pb {
-    font-size: 0.6rem; font-weight: 700;
-    padding: 2px 7px; border-radius: var(--r4);
-    text-transform: uppercase; letter-spacing: 0.3px;
-    flex-shrink: 0;
-}
-.pb-hi { background: var(--red50); color: var(--red); }
-.pb-md { background: var(--amb50); color: var(--amb); }
-.pb-lo { background: var(--g50);   color: var(--g600); }
-
-/* ── AZ BADGE ── */
-.az {
-    display: inline-flex; align-items: center; gap: 5px;
-    background: var(--blu50); border: 1px solid #c0d8ff;
-    color: var(--blu); padding: 4px 10px; border-radius: 100px;
-    font-size: 0.65rem; font-weight: 700;
-    letter-spacing: 0.3px; margin-bottom: 1.25rem;
-}
-
-/* ── STREAMLIT OVERRIDES ── */
-.stMetric {
-    background: #fff !important;
-    border: 1px solid var(--ink7) !important;
-    border-radius: var(--r12) !important;
-    padding: 1rem 1.1rem !important;
-}
-.stMetric label {
-    font-size: 0.62rem !important;
-    color: var(--ink5) !important;
-    font-weight: 700 !important;
-    text-transform: uppercase !important;
-    letter-spacing: 0.8px !important;
-}
-.stMetric [data-testid="metric-container"] > div:nth-child(2) {
-    font-size: 1.6rem !important;
-    font-weight: 900 !important;
-    color: var(--ink) !important;
-    letter-spacing: -0.8px !important;
-    font-variant-numeric: tabular-nums;
-}
-div[data-testid="stMetricDelta"] {
-    font-size: 0.72rem !important;
-    font-weight: 600 !important;
-}
-
-.stButton > button {
-    background: var(--g500) !important;
-    color: #fff !important;
-    border: none !important;
-    border-radius: var(--r8) !important;
-    padding: 0.62rem 1.6rem !important;
-    font-size: 0.83rem !important;
-    font-weight: 700 !important;
-    font-family: 'Outfit', sans-serif !important;
-    transition: all 0.18s !important;
-    letter-spacing: 0.2px !important;
-}
-.stButton > button:hover {
-    background: var(--g600) !important;
-    transform: translateY(-1px) !important;
-    box-shadow: 0 6px 18px rgba(10,102,38,0.28) !important;
-}
-
-.stTabs [data-baseweb="tab-list"] {
-    background: var(--ink8) !important;
-    border: 1px solid var(--ink7) !important;
-    border-radius: var(--r8) !important;
-    padding: 4px !important;
-    gap: 2px !important;
-}
-.stTabs [data-baseweb="tab"] {
-    border-radius: 6px !important;
-    font-size: 0.79rem !important;
-    font-weight: 600 !important;
-    color: var(--ink5) !important;
-    padding: 0.45rem 1rem !important;
-    background: transparent !important;
-    font-family: 'Outfit', sans-serif !important;
-}
-.stTabs [aria-selected="true"] {
-    background: #fff !important;
-    color: var(--ink) !important;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.07) !important;
-}
-
-.stSelectbox > div > div {
-    border-radius: var(--r8) !important;
-    border-color: var(--ink7) !important;
-    font-size: 0.82rem !important;
-    font-family: 'Outfit', sans-serif !important;
-    background: #fff !important;
-}
-.stSlider [data-testid="stTickBar"] { display: none; }
-.stSlider [data-baseweb="slider"] [role="slider"] {
-    background: var(--g500) !important;
-    border: 2px solid #fff !important;
-    box-shadow: 0 0 0 2px var(--g400) !important;
-}
-.stSlider [data-baseweb="slider"] > div > div {
-    background: var(--g200) !important;
-}
-
-[data-testid="stDataFrame"] {
-    border: 1px solid var(--ink7) !important;
-    border-radius: var(--r12) !important;
-    overflow: hidden !important;
-}
-[data-testid="stDataFrame"] th {
-    background: var(--ink8) !important;
-    font-size: 0.72rem !important;
-    font-weight: 700 !important;
-    text-transform: uppercase !important;
-    letter-spacing: 0.5px !important;
-    color: var(--ink4) !important;
-}
-
-#MainMenu { visibility: hidden; }
-footer { visibility: hidden; }
-header[data-testid="stHeader"] { background: transparent !important; }
-
-hr {
-    border: none !important;
-    border-top: 1px solid var(--ink7) !important;
-    margin: 1.5rem 0 !important;
-}
-
-::-webkit-scrollbar { width: 5px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--ink6); border-radius: 3px; }
-[data-testid="stSidebar"] ::-webkit-scrollbar-thumb { background: var(--g800); }
-
-@keyframes fadeUp {
-    from { opacity: 0; transform: translateY(14px); }
-    to   { opacity: 1; transform: translateY(0); }
-}
-.block-container { animation: fadeUp 0.4s ease-out; }
-
-[data-testid="stSidebar"] {
-    transition: transform 0.3s ease, width 0.3s ease !important;
-}
-
-/* number input */
-.stNumberInput input {
-    border-radius: var(--r8) !important;
-    border-color: var(--ink7) !important;
-    font-family: 'Outfit', sans-serif !important;
-    font-size: 0.83rem !important;
-}
-
-/* plotly container */
-.js-plotly-plot { border-radius: var(--r12) !important; overflow: hidden; }
-</style>
-""", unsafe_allow_html=True)
+_css_path = Path(__file__).parent / "style.css"
+with open(_css_path, "r", encoding="utf-8") as _f:
+    st.markdown(f"<style>{_f.read()}</style>", unsafe_allow_html=True)
 
 
 # ═══════════════════════════════════════════════════════
@@ -721,7 +142,7 @@ def chart_style(fig, h=400, m=None):
         m = dict(l=0, r=0, t=20, b=0)
     fig.update_layout(
         height=h, margin=m,
-        font_family='Outfit', font=dict(size=12),
+        font_family='Inter', font=dict(size=12),
         paper_bgcolor='rgba(0,0,0,0)',
         plot_bgcolor='rgba(0,0,0,0)',
         xaxis=dict(showgrid=False, zeroline=False, linecolor='#e8efe9'),
@@ -750,7 +171,7 @@ with st.sidebar:
         </div>
         <p class="sb-sub">Prediksi Anomali &amp; Deteksi<br>Risiko Pangan Indonesia</p>
     </div>
-    <p class="sb-nav-label">Navigasi</p>
+    <p class="sb-nav-label">Menu</p>
     """, unsafe_allow_html=True)
 
     menu = st.radio("nav", [
@@ -778,13 +199,13 @@ with st.sidebar:
 
 
 # ═══════════════════════════════════════════════════════
-# HERO BANNER
+# HERO HEADER
 # ═══════════════════════════════════════════════════════
 st.markdown("""
-<div class="hero">
+<div class="hero-header">
     <div>
         <div class="hero-live">
-            <div class="hero-live-dot"></div>
+            <div class="hero-dot"></div>
             Live Monitoring
         </div>
         <h1>Si<span>PADI</span> Dashboard</h1>
@@ -793,7 +214,7 @@ st.markdown("""
             mendukung Program Swasembada Pangan 2025–2029
         </p>
     </div>
-    <div class="hero-stats-grid">
+    <div class="hero-stats">
         <div class="hs">
             <span class="hs-label">Wilayah</span>
             <span class="hs-val">Jateng &amp; Jatim</span>
@@ -831,11 +252,11 @@ if menu == "Overview & KPI":
 
     with c1:
         st.markdown(f"""
-        <div class="kpi" style="--kc:#34d464">
+        <div class="kpi kpi-primary">
             <div class="kpi-label">Kabupaten Dipantau</div>
             <div class="kpi-num">{total_kab}</div>
             <div class="kpi-desc">Jawa Tengah &amp; Jawa Timur</div>
-            <span class="badge b-neu">Aktif 100%</span>
+            <span class="badge">Aktif 100%</span>
         </div>""", unsafe_allow_html=True)
 
     with c2:
@@ -934,15 +355,9 @@ if menu == "Overview & KPI":
 # ═══════════════════════════════════════════════════════
 elif menu == "Peta Risiko Kabupaten":
     st.markdown("""
-    <div class="phead">
-        <div class="phead-icon">
-            <svg viewBox="0 0 24 24">
-                <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/>
-                <line x1="8" y1="2" x2="8" y2="18"/>
-                <line x1="16" y1="6" x2="16" y2="22"/>
-            </svg>
-        </div>
-        <div class="phead-text">
+    <div class="page-header">
+        <div class="ph-icon"><span class="material-symbols-outlined">map</span></div>
+        <div class="ph-text">
             <h1>Peta Risiko per Kabupaten</h1>
             <p>Visualisasi spasial risiko gagal panen berdasarkan model klasifikasi SiPADI</p>
         </div>
@@ -1017,13 +432,9 @@ elif menu == "Peta Risiko Kabupaten":
 # ═══════════════════════════════════════════════════════
 elif menu == "Prediksi Produktivitas":
     st.markdown("""
-    <div class="phead">
-        <div class="phead-icon">
-            <svg viewBox="0 0 24 24">
-                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
-            </svg>
-        </div>
-        <div class="phead-text">
+    <div class="page-header">
+        <div class="ph-icon"><span class="material-symbols-outlined">trending_up</span></div>
+        <div class="ph-text">
             <h1>Prediksi Produktivitas Padi</h1>
             <p>Masukkan parameter kondisi lapangan untuk mendapatkan estimasi produktivitas</p>
         </div>
@@ -1143,15 +554,9 @@ elif menu == "Prediksi Produktivitas":
 # ═══════════════════════════════════════════════════════
 elif menu == "Deteksi Risiko Gagal Panen":
     st.markdown("""
-    <div class="phead">
-        <div class="phead-icon">
-            <svg viewBox="0 0 24 24">
-                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
-                <line x1="12" y1="9" x2="12" y2="13"/>
-                <line x1="12" y1="17" x2="12.01" y2="17"/>
-            </svg>
-        </div>
-        <div class="phead-text">
+    <div class="page-header">
+        <div class="ph-icon"><span class="material-symbols-outlined">warning</span></div>
+        <div class="ph-text">
             <h1>Deteksi Risiko Gagal Panen</h1>
             <p>Analisis tren risiko dan performa model klasifikasi XGBoost</p>
         </div>
@@ -1215,14 +620,9 @@ elif menu == "Deteksi Risiko Gagal Panen":
 # ═══════════════════════════════════════════════════════
 elif menu == "Forecast Harga Beras":
     st.markdown("""
-    <div class="phead">
-        <div class="phead-icon">
-            <svg viewBox="0 0 24 24">
-                <line x1="12" y1="1" x2="12" y2="23"/>
-                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
-            </svg>
-        </div>
-        <div class="phead-text">
+    <div class="page-header">
+        <div class="ph-icon"><span class="material-symbols-outlined">payments</span></div>
+        <div class="ph-text">
             <h1>Forecast Harga Beras</h1>
             <p>Prediksi 12 bulan ke depan — SARIMA(1,1,1)(1,1,1,12) · MAPE 1.16%</p>
         </div>
@@ -1295,16 +695,9 @@ elif menu == "Forecast Harga Beras":
 # ═══════════════════════════════════════════════════════
 elif menu == "Analisis Sentimen Berita":
     st.markdown("""
-    <div class="phead">
-        <div class="phead-icon">
-            <svg viewBox="0 0 24 24">
-                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                <polyline points="14 2 14 8 20 8"/>
-                <line x1="16" y1="13" x2="8" y2="13"/>
-                <line x1="16" y1="17" x2="8" y2="17"/>
-            </svg>
-        </div>
-        <div class="phead-text">
+    <div class="page-header">
+        <div class="ph-icon"><span class="material-symbols-outlined">article</span></div>
+        <div class="ph-text">
             <h1>Analisis Sentimen Berita Pangan</h1>
             <p>Analisis sentimen teks berita menggunakan Azure AI Language</p>
         </div>
@@ -1391,15 +784,9 @@ elif menu == "Analisis Sentimen Berita":
 # ═══════════════════════════════════════════════════════
 elif menu == "Rekomendasi Strategis":
     st.markdown("""
-    <div class="phead">
-        <div class="phead-icon">
-            <svg viewBox="0 0 24 24">
-                <circle cx="12" cy="12" r="10"/>
-                <line x1="12" y1="8" x2="12" y2="12"/>
-                <line x1="12" y1="16" x2="12.01" y2="16"/>
-            </svg>
-        </div>
-        <div class="phead-text">
+    <div class="page-header">
+        <div class="ph-icon"><span class="material-symbols-outlined">target</span></div>
+        <div class="ph-text">
             <h1>Rekomendasi Strategis</h1>
             <p>Actionable insights berbasis model SiPADI untuk Bulog &amp; Kementan</p>
         </div>
