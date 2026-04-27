@@ -1,5 +1,4 @@
-<<<<<<< HEAD
-﻿# SiPADI
+### SIPADI
 ### Sistem Prediksi Anomali & Deteksi Risiko Pangan Indonesia
 
 [![Azure](https://img.shields.io/badge/Microsoft_Azure-5_Services-0078D4?logo=microsoftazure&logoColor=white)](https://azure.microsoft.com)
