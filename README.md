@@ -183,8 +183,3 @@ Microsoft Elevate Training Center · AI Impact Challenge 2026
 
 ---
 
-##  Lisensi
-
-MIT License — lihat [LICENSE](LICENSE) untuk detail.
-
----
