@@ -1,5 +1,5 @@
 <<<<<<< HEAD
-﻿# 🌾 SiPADI
+﻿# SiPADI
 ### Sistem Prediksi Anomali & Deteksi Risiko Pangan Indonesia
 
 [![Azure](https://img.shields.io/badge/Microsoft_Azure-5_Services-0078D4?logo=microsoftazure&logoColor=white)](https://azure.microsoft.com)
@@ -17,8 +17,9 @@
 > **Swasembada Pangan 2025–2029** Presiden Prabowo Subianto.
 
 ---
+Live Demo : https://gray-plant-04e84a600.7.azurestaticapps.net/
 
-## 🎯 Problem Statement
+##  Problem Statement
 
 Indonesia menghadapi ancaman defisit pangan yang kompleks akibat:
 - Anomali iklim El Niño/La Niña yang tidak terprediksi
@@ -32,7 +33,7 @@ hingga 12 bulan ke depan — semua dalam satu dashboard interaktif.
 
 ---
 
-## 🏗️ Arsitektur Sistem
+##  Arsitektur Sistem
 ```bash
 ┌─────────────────────────────────────────────────────────┐
 │                    DATA SOURCES                         │
@@ -75,7 +76,7 @@ hingga 12 bulan ke depan — semua dalam satu dashboard interaktif.
 ```
 ---
 
-## 🤖 Performa Model AI
+##  Performa Model AI
 
 | Model | Algoritma | Metrik | Nilai |
 |-------|-----------|--------|-------|
@@ -87,7 +88,7 @@ hingga 12 bulan ke depan — semua dalam satu dashboard interaktif.
 
 ---
 
-## 🔵 Microsoft Azure Services
+##  Microsoft Azure Services
 
 | Service | Fungsi | Tier |
 |---------|--------|------|
@@ -99,7 +100,7 @@ hingga 12 bulan ke depan — semua dalam satu dashboard interaktif.
 
 ---
 
-## 📦 Dataset
+##  Dataset
 
 | Dataset | Sumber | Records | Periode |
 |---------|--------|---------|---------|
@@ -114,7 +115,7 @@ hingga 12 bulan ke depan — semua dalam satu dashboard interaktif.
 
 ---
 ```bash
-## 🗂️ Struktur Repositori
+##  Struktur Repositori
 sipadi/
 ├── apps/                      # entry point aplikasi
 │   └── dashboard/            # Streamlit app
@@ -166,7 +167,7 @@ sipadi/
 ```
 ---
 
-## 🚀 Quick Start
+##  Quick Start
 
 ### 1. Clone Repository
 ```bash
@@ -200,7 +201,7 @@ jupyter notebook
 
 ---
 
-## 💡 Key Insights
+##  Key Insights
 
 1. **Program Pompanisasi Efektif** — Korelasi jumlah pompa dengan produktivitas mencapai 0.708, membuktikan program Kementan sejak 2020 berdampak signifikan
 
@@ -214,7 +215,7 @@ jupyter notebook
 
 ---
 
-## 🎯 Relevansi Kebijakan
+##  Relevansi Kebijakan
 
 SiPADI dirancang langsung untuk mendukung program pemerintah:
 
@@ -227,14 +228,14 @@ SiPADI dirancang langsung untuk mendukung program pemerintah:
 
 ---
 
-## 👥 Tim
+##  Tim
 
 **Ahmad** — Data Scientist & AI Solution Architect
 Microsoft Elevate Training Center · AI Impact Challenge 2026
 
 ---
 
-## 📄 Lisensi
+##  Lisensi
 
 MIT License — lihat [LICENSE](LICENSE) untuk detail.
 
@@ -265,7 +266,7 @@ EOF
 
 ---
 
-## 🎯 Problem Statement
+##  Problem Statement
 
 Indonesia menghadapi ancaman defisit pangan yang kompleks akibat:
 - Anomali iklim El Niño/La Niña yang tidak terprediksi
@@ -279,7 +280,7 @@ hingga 12 bulan ke depan — semua dalam satu dashboard interaktif.
 
 ---
 
-## 🏗️ Arsitektur Sistem
+##  Arsitektur Sistem
 ```bash
 ┌─────────────────────────────────────────────────────────┐
 │                    DATA SOURCES                         │
@@ -322,7 +323,7 @@ hingga 12 bulan ke depan — semua dalam satu dashboard interaktif.
 ```
 ---
 
-## 🤖 Performa Model AI
+##  Performa Model AI
 
 | Model | Algoritma | Metrik | Nilai |
 |-------|-----------|--------|-------|
@@ -334,7 +335,7 @@ hingga 12 bulan ke depan — semua dalam satu dashboard interaktif.
 
 ---
 
-## 🔵 Microsoft Azure Services
+##  Microsoft Azure Services
 
 | Service | Fungsi | Tier |
 |---------|--------|------|
@@ -346,7 +347,7 @@ hingga 12 bulan ke depan — semua dalam satu dashboard interaktif.
 
 ---
 
-## 📦 Dataset
+##  Dataset
 
 | Dataset | Sumber | Records | Periode |
 |---------|--------|---------|---------|
@@ -361,7 +362,7 @@ hingga 12 bulan ke depan — semua dalam satu dashboard interaktif.
 
 ---
 ```bash
-## 🗂️ Struktur Repositori
+##  Struktur Repositori
 sipadi/
 ├── apps/                      # entry point aplikasi
 │   └── dashboard/            # Streamlit app
@@ -413,7 +414,7 @@ sipadi/
 ```
 ---
 
-## 🚀 Quick Start
+##  Quick Start
 
 ### 1. Clone Repository
 ```bash
@@ -447,7 +448,7 @@ jupyter notebook
 
 ---
 
-## 💡 Key Insights
+##  Key Insights
 
 1. **Program Pompanisasi Efektif** — Korelasi jumlah pompa dengan produktivitas mencapai 0.708, membuktikan program Kementan sejak 2020 berdampak signifikan
 
@@ -461,7 +462,7 @@ jupyter notebook
 
 ---
 
-## 🎯 Relevansi Kebijakan
+##  Relevansi Kebijakan
 
 SiPADI dirancang langsung untuk mendukung program pemerintah:
 
@@ -474,21 +475,21 @@ SiPADI dirancang langsung untuk mendukung program pemerintah:
 
 ---
 
-## 👥 Tim
+##  Tim
 
 **Ahmad** — Data Scientist & AI Solution Architect
 Microsoft Elevate Training Center · AI Impact Challenge 2026
 
 ---
 
-## 📄 Lisensi
+##  Lisensi
 
 MIT License — lihat [LICENSE](LICENSE) untuk detail.
 
 ---
 
 <div align="center">
-<b>🌾 SiPADI — Dari Data ke Kebijakan, Dari Kebijakan ke Kesejahteraan Petani</b><br>
+<b> SiPADI — Dari Data ke Kebijakan, Dari Kebijakan ke Kesejahteraan Petani</b><br>
 <i>Microsoft Elevate Training Center · AI Impact Challenge 2026</i>
 </div>
 EOF
