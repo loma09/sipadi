@@ -4,14 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SiPADI — Sistem Prediksi Anomali & Deteksi Risiko Pangan Indonesia</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: #0a1628;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #052e16;
             color: #ffffff;
             min-height: 100vh;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
         }
 
         /* NAV */
@@ -29,8 +37,21 @@
         }
         .nav-logo {
             font-size: 1.3rem;
-            font-weight: 700;
-            color: #52b788;
+            font-weight: 800;
+            color: #4ade80;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            letter-spacing: -0.3px;
+        }
+        .nav-logo .logo-icon {
+            width: 34px; height: 34px;
+            background: linear-gradient(135deg, #16a34a, #22c55e);
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .nav-logo .logo-icon .material-symbols-outlined {
+            font-size: 18px; color: #fff;
         }
         .nav-links { display: flex; gap: 2rem; }
         .nav-links a {
@@ -39,14 +60,23 @@
             font-size: 0.9rem;
             transition: color 0.2s;
         }
-        .nav-links a:hover { color: #52b788; }
+        .nav-links a:hover { color: #4ade80; }
         .nav-cta {
-            background: #52b788;
-            color: #0a1628 !important;
+            background: linear-gradient(135deg, #16a34a, #22c55e);
+            color: #fff !important;
             padding: 0.5rem 1.2rem;
-            border-radius: 6px;
-            font-weight: 600 !important;
+            border-radius: 10px;
+            font-weight: 700 !important;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: all 0.2s;
         }
+        .nav-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(22,163,74,0.3);
+        }
+        .nav-cta .material-symbols-outlined { font-size: 16px; }
 
         /* HERO */
         .hero {
@@ -62,9 +92,9 @@
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            background: rgba(82,183,136,0.15);
-            border: 1px solid rgba(82,183,136,0.3);
-            color: #52b788;
+            background: rgba(34,197,94,0.12);
+            border: 1px solid rgba(34,197,94,0.25);
+            color: #4ade80;
             padding: 0.4rem 1rem;
             border-radius: 20px;
             font-size: 0.8rem;
@@ -78,7 +108,7 @@
             margin-bottom: 1rem;
             letter-spacing: -1px;
         }
-        .hero h1 span { color: #52b788; }
+        .hero h1 span { color: #4ade80; }
         .hero p {
             font-size: 1.1rem;
             color: rgba(255,255,255,0.65);
@@ -87,10 +117,10 @@
         }
         .hero-buttons { display: flex; gap: 1rem; flex-wrap: wrap; }
         .btn-primary {
-            background: #52b788;
-            color: #0a1628;
+            background: linear-gradient(135deg, #16a34a, #22c55e);
+            color: #fff;
             padding: 0.8rem 2rem;
-            border-radius: 8px;
+            border-radius: 10px;
             text-decoration: none;
             font-weight: 700;
             font-size: 0.95rem;
@@ -98,29 +128,32 @@
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
+            box-shadow: 0 4px 14px rgba(22,163,74,0.3);
         }
         .btn-primary:hover {
-            background: #40a070;
-            transform: translateY(-1px);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(22,163,74,0.4);
         }
+        .btn-primary .material-symbols-outlined { font-size: 18px; }
         .btn-secondary {
-            background: rgba(255,255,255,0.08);
+            background: rgba(255,255,255,0.06);
             color: white;
             padding: 0.8rem 2rem;
-            border-radius: 8px;
+            border-radius: 10px;
             text-decoration: none;
             font-weight: 600;
             font-size: 0.95rem;
-            border: 1px solid rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.12);
             transition: all 0.2s;
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
         }
         .btn-secondary:hover {
-            background: rgba(255,255,255,0.12);
-            transform: translateY(-1px);
+            background: rgba(255,255,255,0.10);
+            transform: translateY(-2px);
         }
+        .btn-secondary .material-symbols-outlined { font-size: 18px; }
 
         /* HERO VISUAL */
         .hero-visual {
@@ -130,53 +163,62 @@
             padding: 2rem;
         }
         .hero-visual h3 {
-            font-size: 0.85rem;
-            color: rgba(255,255,255,0.5);
+            font-size: 0.7rem;
+            color: rgba(255,255,255,0.4);
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 1.5px;
             margin-bottom: 1.5rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
-        .model-cards { display: flex; flex-direction: column; gap: 1rem; }
+        .hero-visual h3 .material-symbols-outlined { font-size: 16px; color: #4ade80; }
+        .model-cards { display: flex; flex-direction: column; gap: 0.75rem; }
         .model-card {
             background: rgba(255,255,255,0.05);
             border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 10px;
+            border-radius: 12px;
             padding: 1rem 1.2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            transition: all 0.2s;
         }
+        .model-card:hover { background: rgba(255,255,255,0.08); transform: translateX(4px); }
         .model-card-left { display: flex; align-items: center; gap: 0.8rem; }
         .model-icon {
             width: 36px;
             height: 36px;
-            border-radius: 8px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.1rem;
         }
-        .icon-green { background: rgba(82,183,136,0.2); }
-        .icon-red { background: rgba(239,68,68,0.2); }
-        .icon-yellow { background: rgba(245,158,11,0.2); }
+        .model-icon .material-symbols-outlined { font-size: 18px; }
+        .icon-green { background: rgba(34,197,94,0.15); color: #4ade80; }
+        .icon-red { background: rgba(239,68,68,0.15); color: #f87171; }
+        .icon-yellow { background: rgba(245,158,11,0.15); color: #fbbf24; }
         .model-name { font-size: 0.85rem; font-weight: 600; }
-        .model-algo { font-size: 0.75rem; color: rgba(255,255,255,0.5); }
+        .model-algo { font-size: 0.72rem; color: rgba(255,255,255,0.4); font-family: 'JetBrains Mono', monospace; }
         .model-metrics { text-align: right; }
         .model-score {
             font-size: 1.1rem;
             font-weight: 700;
-            color: #52b788;
+            color: #4ade80;
+            font-family: 'JetBrains Mono', monospace;
         }
         .model-metric-name {
-            font-size: 0.7rem;
-            color: rgba(255,255,255,0.4);
+            font-size: 0.68rem;
+            color: rgba(255,255,255,0.35);
+            font-family: 'JetBrains Mono', monospace;
         }
 
         /* STATS */
         .stats {
-            background: rgba(82,183,136,0.05);
-            border-top: 1px solid rgba(82,183,136,0.15);
-            border-bottom: 1px solid rgba(82,183,136,0.15);
+            background: rgba(34,197,94,0.04);
+            border-top: 1px solid rgba(34,197,94,0.12);
+            border-bottom: 1px solid rgba(34,197,94,0.12);
             padding: 3rem 4rem;
         }
         .stats-grid {
@@ -189,14 +231,15 @@
         }
         .stat-value {
             font-size: 2rem;
-            font-weight: 800;
-            color: #52b788;
+            font-weight: 900;
+            color: #4ade80;
             line-height: 1;
             margin-bottom: 0.4rem;
+            font-variant-numeric: tabular-nums;
         }
         .stat-label {
             font-size: 0.8rem;
-            color: rgba(255,255,255,0.55);
+            color: rgba(255,255,255,0.5);
             line-height: 1.4;
         }
 
@@ -208,16 +251,30 @@
         }
         .section-header { text-align: center; margin-bottom: 3rem; }
         .section-tag {
-            display: inline-block;
-            background: rgba(0,120,212,0.15);
-            border: 1px solid rgba(0,120,212,0.3);
-            color: #4da6ff;
-            padding: 0.3rem 1rem;
-            border-radius: 20px;
-            font-size: 0.78rem;
-            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: rgba(0,120,212,0.12);
+            border: 1px solid rgba(0,120,212,0.2);
+            color: #60a5fa;
+            padding: 0.35rem 1rem;
+            border-radius: 100px;
+            font-size: 0.72rem;
+            font-weight: 700;
             margin-bottom: 1rem;
+            letter-spacing: 0.3px;
         }
+        .section-tag.tag-green {
+            background: rgba(34,197,94,0.1);
+            border-color: rgba(34,197,94,0.2);
+            color: #4ade80;
+        }
+        .section-tag.tag-dark {
+            background: rgba(255,255,255,0.06);
+            border-color: rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.6);
+        }
+        .section-tag .material-symbols-outlined { font-size: 15px; }
         .section-header h2 {
             font-size: 2rem;
             font-weight: 700;
@@ -244,18 +301,20 @@
             background: rgba(0,120,212,0.15);
             transform: translateY(-3px);
         }
-        .azure-card .icon { font-size: 2rem; margin-bottom: 0.8rem; }
+        .azure-card .icon { margin-bottom: 0.8rem; }
+        .azure-card .icon .material-symbols-outlined { font-size: 28px; color: #60a5fa; }
         .azure-card h4 { font-size: 0.85rem; font-weight: 600; margin-bottom: 0.4rem; }
         .azure-card p { font-size: 0.75rem; color: rgba(255,255,255,0.5); line-height: 1.4; }
         .azure-free {
             display: inline-block;
-            background: rgba(82,183,136,0.2);
-            color: #52b788;
-            font-size: 0.65rem;
+            background: rgba(34,197,94,0.15);
+            color: #4ade80;
+            font-size: 0.62rem;
             font-weight: 700;
-            padding: 0.1rem 0.5rem;
-            border-radius: 4px;
+            padding: 0.15rem 0.6rem;
+            border-radius: 6px;
             margin-top: 0.5rem;
+            letter-spacing: 0.3px;
         }
 
         /* FEATURES */
@@ -273,17 +332,26 @@
         .feature-card {
             background: rgba(255,255,255,0.04);
             border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 12px;
+            border-radius: 16px;
             padding: 1.8rem;
-            transition: all 0.2s;
+            transition: all 0.25s;
         }
         .feature-card:hover {
-            border-color: rgba(82,183,136,0.3);
-            transform: translateY(-3px);
+            border-color: rgba(34,197,94,0.25);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
-        .feature-icon { font-size: 2rem; margin-bottom: 1rem; }
-        .feature-card h3 { font-size: 1rem; font-weight: 600; margin-bottom: 0.6rem; }
-        .feature-card p { font-size: 0.85rem; color: rgba(255,255,255,0.55); line-height: 1.6; }
+        .feature-icon {
+            width: 44px; height: 44px;
+            background: rgba(34,197,94,0.1);
+            border: 1px solid rgba(34,197,94,0.15);
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 1rem;
+        }
+        .feature-icon .material-symbols-outlined { font-size: 22px; color: #4ade80; }
+        .feature-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.6rem; }
+        .feature-card p { font-size: 0.85rem; color: rgba(255,255,255,0.5); line-height: 1.6; }
 
         /* POLICY */
         .policy {
@@ -307,30 +375,30 @@
             align-items: flex-start;
         }
         .policy-num {
-            background: rgba(82,183,136,0.2);
-            color: #52b788;
+            background: linear-gradient(135deg, #16a34a, #22c55e);
+            color: #fff;
             width: 36px;
             height: 36px;
-            border-radius: 8px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: 700;
-            font-size: 0.9rem;
+            font-weight: 800;
+            font-size: 0.85rem;
             flex-shrink: 0;
         }
-        .policy-card h4 { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.4rem; }
-        .policy-card p { font-size: 0.82rem; color: rgba(255,255,255,0.55); line-height: 1.5; }
+        .policy-card h4 { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.4rem; }
+        .policy-card p { font-size: 0.82rem; color: rgba(255,255,255,0.5); line-height: 1.5; }
 
         /* CTA */
         .cta {
             padding: 5rem 4rem;
             text-align: center;
-            background: linear-gradient(135deg, rgba(82,183,136,0.1) 0%, rgba(0,120,212,0.1) 100%);
-            border-top: 1px solid rgba(82,183,136,0.15);
+            background: linear-gradient(135deg, rgba(34,197,94,0.08) 0%, rgba(59,130,246,0.08) 100%);
+            border-top: 1px solid rgba(34,197,94,0.12);
         }
-        .cta h2 { font-size: 2.2rem; font-weight: 700; margin-bottom: 1rem; }
-        .cta p { color: rgba(255,255,255,0.6); margin-bottom: 2rem; font-size: 1rem; }
+        .cta h2 { font-size: 2.2rem; font-weight: 800; margin-bottom: 1rem; }
+        .cta p { color: rgba(255,255,255,0.5); margin-bottom: 2rem; font-size: 1rem; }
         .cta-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
 
         /* FOOTER */
@@ -348,7 +416,7 @@
             color: rgba(255,255,255,0.4);
             text-decoration: none;
         }
-        .footer-links a:hover { color: #52b788; }
+        .footer-links a:hover { color: #4ade80; }
 
         @media (max-width: 768px) {
             nav { padding: 1rem 1.5rem; }
@@ -369,13 +437,13 @@
 
     <!-- NAV -->
     <nav>
-        <div class="nav-logo">🌾 SiPADI</div>
+        <div class="nav-logo"><div class="logo-icon"><span class="material-symbols-outlined">layers</span></div> SiPADI</div>
         <div class="nav-links">
             <a href="#fitur">Fitur</a>
             <a href="#azure">Azure</a>
             <a href="#kebijakan">Kebijakan</a>
             <a href="https://github.com/loma09/sipadi">GitHub</a>
-            <a href="https://sipadii.streamlit.app/" class="nav-cta">Buka Dashboard →</a>
+            <a href="https://sipadii.streamlit.app/" class="nav-cta"><span class="material-symbols-outlined">open_in_new</span> Buka Dashboard</a>
         </div>
     </nav>
 
@@ -383,7 +451,7 @@
     <section class="hero">
         <div class="hero-content">
             <div class="hero-badge">
-                🏆 Microsoft Elevate · AI Impact Challenge 2026
+                <span class="material-symbols-outlined" style="font-size:15px">emoji_events</span> Microsoft Elevate · AI Impact Challenge 2026
             </div>
             <h1>Deteksi Dini<br>Risiko <span>Pangan</span><br>Indonesia</h1>
             <p>
@@ -393,20 +461,20 @@
             </p>
             <div class="hero-buttons">
                 <a href="https://sipadii.streamlit.app/" class="btn-primary">
-                    🚀 Buka Dashboard
+                    <span class="material-symbols-outlined">dashboard</span> Buka Dashboard
                 </a>
                 <a href="https://github.com/loma09/sipadi" class="btn-secondary">
-                    📂 Lihat Kode
+                    <span class="material-symbols-outlined">code</span> Lihat Kode
                 </a>
             </div>
         </div>
 
         <div class="hero-visual">
-            <h3>⚡ Model AI Performance</h3>
+            <h3><span class="material-symbols-outlined">bolt</span> Model AI Performance</h3>
             <div class="model-cards">
                 <div class="model-card">
                     <div class="model-card-left">
-                        <div class="model-icon icon-green">🌾</div>
+                        <div class="model-icon icon-green"><span class="material-symbols-outlined">trending_up</span></div>
                         <div>
                             <div class="model-name">Prediksi Produktivitas</div>
                             <div class="model-algo">XGBoost Regressor</div>
@@ -419,7 +487,7 @@
                 </div>
                 <div class="model-card">
                     <div class="model-card-left">
-                        <div class="model-icon icon-red">⚠️</div>
+                        <div class="model-icon icon-red"><span class="material-symbols-outlined">warning</span></div>
                         <div>
                             <div class="model-name">Deteksi Risiko Gagal Panen</div>
                             <div class="model-algo">XGBoost Classifier</div>
@@ -432,7 +500,7 @@
                 </div>
                 <div class="model-card">
                     <div class="model-card-left">
-                        <div class="model-icon icon-yellow">💰</div>
+                        <div class="model-icon icon-yellow"><span class="material-symbols-outlined">payments</span></div>
                         <div>
                             <div class="model-name">Forecast Harga Beras</div>
                             <div class="model-algo">SARIMA(1,1,1)(1,1,1,12)</div>
@@ -476,37 +544,37 @@
     <!-- AZURE -->
     <section class="azure-section" id="azure">
         <div class="section-header">
-            <div class="section-tag">⚡ Powered by Microsoft Azure</div>
+            <div class="section-tag"><span class="material-symbols-outlined">bolt</span> Powered by Microsoft Azure</div>
             <h2>5 Azure Services Terintegrasi</h2>
             <p>Arsitektur cloud-native yang scalable dan production-ready</p>
         </div>
         <div class="azure-grid">
             <div class="azure-card">
-                <div class="icon">🗄️</div>
+                <div class="icon"><span class="material-symbols-outlined">cloud_upload</span></div>
                 <h4>Azure Blob Storage</h4>
                 <p>Data lake untuk 7 dataset & model artifacts</p>
                 <span class="azure-free">FREE 5GB</span>
             </div>
             <div class="azure-card">
-                <div class="icon">🤖</div>
+                <div class="icon"><span class="material-symbols-outlined">psychology</span></div>
                 <h4>Azure Machine Learning</h4>
                 <p>Experiment tracking & model registry</p>
                 <span class="azure-free">FREE QUOTA</span>
             </div>
             <div class="azure-card">
-                <div class="icon">💬</div>
+                <div class="icon"><span class="material-symbols-outlined">chat</span></div>
                 <h4>Azure AI Language</h4>
                 <p>Sentiment analysis berita pangan</p>
                 <span class="azure-free">FREE F0</span>
             </div>
             <div class="azure-card">
-                <div class="icon">🗺️</div>
+                <div class="icon"><span class="material-symbols-outlined">map</span></div>
                 <h4>Azure Maps</h4>
                 <p>Visualisasi peta risiko kabupaten</p>
                 <span class="azure-free">FREE 1K/hari</span>
             </div>
             <div class="azure-card">
-                <div class="icon">🌐</div>
+                <div class="icon"><span class="material-symbols-outlined">language</span></div>
                 <h4>Azure Static Web Apps</h4>
                 <p>Hosting landing page publik ini</p>
                 <span class="azure-free">FREE</span>
@@ -518,38 +586,38 @@
     <section class="features" id="fitur">
         <div class="features-inner">
             <div class="section-header">
-                <div class="section-tag">🌾 Fitur Utama</div>
+                <div class="section-tag tag-green"><span class="material-symbols-outlined">auto_awesome</span> Fitur Utama</div>
                 <h2>Solusi End-to-End Ketahanan Pangan</h2>
                 <p>Dari data mentah hingga rekomendasi kebijakan yang actionable</p>
             </div>
             <div class="features-grid">
                 <div class="feature-card">
-                    <div class="feature-icon">📈</div>
+                    <div class="feature-icon"><span class="material-symbols-outlined">trending_up</span></div>
                     <h3>Prediksi Produktivitas Real-time</h3>
                     <p>Input parameter iklim, lahan, dan infrastruktur untuk mendapatkan prediksi produktivitas padi per kabupaten dengan akurasi R²=0.886.</p>
                 </div>
                 <div class="feature-card">
-                    <div class="feature-icon">⚠️</div>
+                    <div class="feature-icon"><span class="material-symbols-outlined">warning</span></div>
                     <h3>Deteksi Dini Risiko Gagal Panen</h3>
                     <p>Sistem klasifikasi berbasis AI yang mendeteksi 92.6% kasus risiko gagal panen sebelum terjadi, memberikan waktu intervensi yang cukup.</p>
                 </div>
                 <div class="feature-card">
-                    <div class="feature-icon">💰</div>
+                    <div class="feature-icon"><span class="material-symbols-outlined">payments</span></div>
                     <h3>Forecast Harga Beras 12 Bulan</h3>
                     <p>Model SARIMA dengan MAPE 1.16% memforecast harga beras hingga 12 bulan ke depan untuk mendukung keputusan pembelian Bulog.</p>
                 </div>
                 <div class="feature-card">
-                    <div class="feature-icon">🗺️</div>
+                    <div class="feature-icon"><span class="material-symbols-outlined">map</span></div>
                     <h3>Peta Risiko Interaktif</h3>
                     <p>Visualisasi spasial risiko gagal panen per kabupaten menggunakan Azure Maps untuk identifikasi wilayah prioritas intervensi.</p>
                 </div>
                 <div class="feature-card">
-                    <div class="feature-icon">📰</div>
+                    <div class="feature-icon"><span class="material-symbols-outlined">article</span></div>
                     <h3>Analisis Sentimen Berita Pangan</h3>
                     <p>Azure AI Language menganalisis sentimen berita pertanian secara real-time sebagai indikator tambahan kondisi ketahanan pangan.</p>
                 </div>
                 <div class="feature-card">
-                    <div class="feature-icon">💡</div>
+                    <div class="feature-icon"><span class="material-symbols-outlined">lightbulb</span></div>
                     <h3>Rekomendasi Strategis</h3>
                     <p>Insight actionable untuk Bulog dan Kementan: kapan beli gabah, mana prioritas pompanisasi, dan kabupaten mana yang butuh intervensi segera.</p>
                 </div>
@@ -560,7 +628,7 @@
     <!-- POLICY -->
     <section class="policy" id="kebijakan">
         <div class="section-header">
-            <div class="section-tag">🏛️ Relevansi Kebijakan</div>
+            <div class="section-tag tag-dark"><span class="material-symbols-outlined">account_balance</span> Relevansi Kebijakan</div>
             <h2>Mendukung Program Pemerintah</h2>
             <p>SiPADI dirancang langsung untuk program prioritas Presiden Prabowo</p>
         </div>
@@ -602,10 +670,10 @@
         <p>Dashboard interaktif dengan data real — prediksi, deteksi, dan forecast dalam satu platform</p>
         <div class="cta-buttons">
             <a href="https://sipadii.streamlit.app/" class="btn-primary">
-                🚀 Buka Dashboard
+                <span class="material-symbols-outlined">dashboard</span> Buka Dashboard
             </a>
             <a href="https://github.com/loma09/sipadi" class="btn-secondary">
-                📂 Source Code
+                <span class="material-symbols-outlined">code</span> Source Code
             </a>
         </div>
     </section>
