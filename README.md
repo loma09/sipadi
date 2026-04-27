@@ -4,7 +4,7 @@
 [![Azure](https://img.shields.io/badge/Microsoft_Azure-5_Services-0078D4?logo=microsoftazure&logoColor=white)](https://azure.microsoft.com)
 [![Python](https://img.shields.io/badge/Python-3.13-3776AB?logo=python&logoColor=white)](https://python.org)
 [![Streamlit](https://img.shields.io/badge/Dashboard-Streamlit-FF4B4B?logo=streamlit&logoColor=white)](https://streamlit.io)
-[![AI Impact Challenge](https://img.shields.io/badge/Microsoft_Elevate-AI_Impact_Challenge_2026-0078D4)](https://dicoding.com)
+[![AI Impact Challenge](https://img.shields.io/badge/Microsoft_Elevate-AI_Impact_Challenge_2026-0078D4)(https://www.dicoding.com/challenges/list)
 
 ---
 
