@@ -15,8 +15,7 @@
 > **Swasembada Pangan 2025–2029** Presiden Prabowo Subianto.
 
 ---
-Live Demo : https://gray-plant-04e84a600.7.azurestaticapps.net/
-
+Live Demo : https://sipadii.streamlit.app/
 ##  Problem Statement
 
 Indonesia menghadapi ancaman defisit pangan yang kompleks akibat:
